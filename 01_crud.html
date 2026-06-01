@@ -15,19 +15,26 @@
         <input name="pokeName" required />
         <button>등록</button>
       </form>
+      <section id="pokeList"></section>
     </section>
+    <!-- 외부 스크립트를 불러와줘야함 -->
+    <!-- https://github.com/axios/axios#cdn -->
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.13.2/dist/axios.min.js"></script>
     <script>
       // DOM
       // querySelector (선택자 사용) & '#'' 아이디 사용
       const form = document.querySelector("#pokeRegister");
+      const list = document.querySelector("#pokeList");
 
       // Event Listener
       // click 아님! (이벤트 타입)
+      document.addEventListener("DOMContentLoaded", domHandler);
       form.addEventListener("submit", formHandler);
 
       // Event Handler (호이스팅 허용 - 함수 선언식)
       // function formHandler(event) {
-      async function formHandler(event) { // 내부 await 쓰려고 하면
+      async function formHandler(event) {
+        // 내부 await 쓰려고 하면
         event.preventDefault(); // 기본 폼 제출 비활성화
         // 1. form - 변수 -> Form DOM => 이걸 넣어도 FormData 작동
         // 2. event -> event.target (lexical scope 고려)
@@ -46,6 +53,22 @@
         // setTimeout(() => {
         //   console.log(response);
         // }, 2000);
+
+        // 다시 그려주기
+        drawPokeList(await getData());
+      }
+
+      //   function domHandler() {
+      async function domHandler() {
+        // 콜백으로 들어가므로 상위에 async는 필요 없음
+        console.log("화면을 다시 그림");
+
+        // 데이터 로드
+        const data = await getData();
+        console.log("data", data);
+
+        // 데이터를 바탕으로 특정 돔 요소에 그리면.
+        drawPokeList(data);
       }
 
       // fetch
@@ -61,44 +84,72 @@
         // 2. JSON 으로 전달
         const payload = { name }; // 단축 -> 변수명으로 바로 넣으면 그 키를 가지는 프로퍼티화 시켜줌
         console.log(payload);
-        const response = await fetch(apiURL, {
-          method: "POST", // 데이터 생성
-          // payload (페이로드를 body에 담는다)
-          //   body: formData,
-          //   body: payload,
-          body: JSON.stringify(payload),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-          // .then(console.log); // 응답 객체
-          //   .then((resp) => resp.text()) // 응답 body에 있는 데이터를 텍스트화
-          //   .then((text) => console.log(text));
-          .then((resp) => resp.json());
+
+        // [Axios 구현]
+        const response = await axios.post(apiURL, payload); // post -> 그냥 별도의 설정 없이 payload를 넣으면 -> header까지 달아줌
+        //   .then(console.log); // 응답 객체
+        // response.data -> 알아서 json으로 변환해줌
+        console.log("response.data", response.data);
+
+        // [fetch로 구현]
+        // const response = await fetch(apiURL, {
+        //   method: "POST", // 데이터 생성
+        //   // payload (페이로드를 body에 담는다)
+        //   //   body: formData,
+        //   //   body: payload,
+        //   body: JSON.stringify(payload),
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        // })
+        //   // .then(console.log); // 응답 객체
+        //   //   .then((resp) => resp.text()) // 응답 body에 있는 데이터를 텍스트화
+        //   //   .then((text) => console.log(text));
+        //   .then((resp) => resp.json());
         // console.log 대신에 dom 조작하는 함수가 들어가면?
         //   .then((json) => console.log(json))
         //   .then(() => console.log("제출 완료"));
-        // console.log(response); // Promise {<pending>}
+        // console.log(response); // Promise {<pending>}
         // response undefined -> 이러고 싶지 않으면 -> json이나 text 같은 '결과'를 가져오는 데서 멈춰야함
         console.log("response", response); // 제출 완료 다음에 나옴
       }
 
-      function getData() {
-        const apiURL = "https://6a1ce1e38858a003817c233f.mockapi.io/pokemon";
-        const response = fetch(apiURL, {
-          method: "GET", // 데이터를 호출하는 것
-        })
-          // .then(console.log); // 응답 객체
-          //   .then((resp) => resp.text()) // 응답 body에 있는 데이터를 텍스트화
-          //   .then((text) => console.log(text));
-          .then((resp) => resp.json())
-          // console.log 대신에 dom 조작하는 함수가 들어가면?
-          .then((json) => console.log(json));
-        console.log(response); // Promise {<pending>}
+      //   function getData() {
+      async function getData() {
+        const apiURL = "https://6a1ce1ec8858a003817c236e.mockapi.io/pokemon";
+
+        const response = await axios.get(apiURL);
+        console.log("response.data", response.data);
+        return response.data;
+
+        // [Fetch 구현]
+        // const response = fetch(apiURL, {
+        //   method: "GET", // 데이터를 호출하는 것
+        // })
+        //   // .then(console.log); // 응답 객체
+        //   //   .then((resp) => resp.text()) // 응답 body에 있는 데이터를 텍스트화
+        //   //   .then((text) => console.log(text));
+        //   .then((resp) => resp.json());
+        // console.log 대신에 dom 조작하는 함수가 들어가면?
+        //   .then((json) => console.log(json));
+        // console.log("response", response); // Promise {<pending>}
+        // return response; // fetch -> promise => return을 하면 굳이 내부에 await를 넣을게 아니면 async를 안붙여도 된다
+      }
+
+      // Rendering
+      function drawPokeList(data) {
+        console.log("drawPokeList", data);
+        // 기존에 있는 것 지워야...
+        list.innerHTML = ""; // 가장 쉬운 방법
+        for (const v of data) {
+          //   console.log(v);
+          const item = document.createElement("p");
+          //   item.textContent = v; // Object
+          //   item.textContent = JSON.stringify(v);
+          item.textContent = v["name"];
+          list.append(item);
+        }
       }
     </script>
   </body>
 </html>
-
----
-
