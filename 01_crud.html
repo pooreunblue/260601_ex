@@ -24,9 +24,11 @@
             event.preventDefault();
             console.log(...formData);
             console.log(formData.get("pokename"))
-            console.log("제출");
-
             
+            const apiURL = "https://6a1ce1ec8858a003817c236e.mockapi.io/pokemon";
+            const response = fetch(apiURL);
+            console.log(response);
+            console.log("제출");
         };
     </script>
 </body>
