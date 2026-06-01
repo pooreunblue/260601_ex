@@ -6,6 +6,21 @@
     <title>MockAPI</title>
 </head>
 <body>
-    
+    <section>
+        <h1>포켓몬 등록</h1>
+        <form id="pokeRegister">
+            <input name="pokename"/>
+            <button>등록</button>
+        </form>
+    </section>
+    <script>
+        // DOM
+        const form = document.querySelector('#pokeRegister');
+        // EVENTLISTENER
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            console.log("제출");
+        });
+    </script>
 </body>
 </html>
