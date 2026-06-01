@@ -17,10 +17,17 @@
         // DOM
         const form = document.querySelector('#pokeRegister');
         // EVENTLISTENER
-        form.addEventListener("submit", (event) => {
+        form.addEventListener("submit", formHandler);
+
+        function formHandler(event) {
+            const formData = new FormData(event.target);
             event.preventDefault();
+            console.log(...formData);
+            console.log(formData.get("pokename"))
             console.log("제출");
-        });
+
+            
+        };
     </script>
 </body>
 </html>
