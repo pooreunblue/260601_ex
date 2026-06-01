@@ -1,0 +1,8 @@
+{
+  "name": "pokemon-fusion-lab",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

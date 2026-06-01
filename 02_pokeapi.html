@@ -3,23 +3,66 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Poke API</title>
+    <title>Pokefusion</title>
     <link rel="stylesheet" href="./02_style.css" />
   </head>
   <body>
-    <section>
-      <form id="searchForm">
-        <h3>포켓몬 검색</h3>
-        <input name="search" required />
-        <button>검색</button>
-      </form>
-      <section id="searchContainer">
-        <h3>검색한 포켓몬</h3>
-        <section id="searchResult">
-          <p>현재 검색된 포켓몬이 없습니다</p>
-        </section>
+    <main class="app">
+      <section class="hero">
+        <p class="eyebrow">Pokefusion Lab</p>
+        <h1>무작위 포켓몬 2마리를 합쳐 새로운 포켓몬을 만들어보세요</h1>
+        <p class="lead">
+          버튼을 누르면 PokeAPI에서 두 포켓몬을 무작위로 가져오고, 합성
+          프롬프트를 만들어 생성형 이미지로 연결할 수 있습니다.
+        </p>
       </section>
-    </section>
+
+      <section class="panel">
+        <button id="generateBtn" type="button">무작위 포켓몬 합성하기</button>
+        <p id="statusMessage" class="status">아직 선택된 포켓몬이 없습니다.</p>
+      </section>
+
+      <section class="fusion-grid">
+        <article class="card" id="firstPokemonCard">
+          <h3>첫 번째 포켓몬</h3>
+          <div class="card-body" id="firstPokemonResult">
+            <p>버튼을 눌러 선택하세요.</p>
+          </div>
+        </article>
+
+        <article class="card" id="secondPokemonCard">
+          <h3>두 번째 포켓몬</h3>
+          <div class="card-body" id="secondPokemonResult">
+            <p>버튼을 눌러 선택하세요.</p>
+          </div>
+        </article>
+      </section>
+
+      <section class="panel">
+        <h3>생성 프롬프트</h3>
+        <p id="fusionPrompt" class="prompt">
+          아직 프롬프트가 없습니다. 버튼을 눌러주세요.
+        </p>
+        <p class="helper">
+          실제 생성형 이미지를 붙이려면 이 프롬프트를 이미지 생성 API로 전달하면
+          됩니다.
+        </p>
+      </section>
+
+      <section class="panel">
+        <h3>생성 이미지 자리</h3>
+        <div id="generatedImage" class="generated-image empty">
+          생성된 이미지가 이곳에 표시됩니다.
+        </div>
+      </section>
+
+      <section class="panel">
+        <h3>생성 기록</h3>
+        <div id="fusionHistory" class="history-list">
+          <p class="history-empty">아직 생성 기록이 없습니다.</p>
+        </div>
+      </section>
+    </main>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="./02_script.js"></script>
   </body>
