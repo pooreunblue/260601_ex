@@ -1,0 +1,45 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* form, section, h3, input, button */
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid gray;
+  border-radius: 16px;
+  width: 480px;
+  /* 가로 중앙정렬 */
+  margin: 16px auto;
+}
+
+form > button {
+  /* padding: 4px; */
+  padding: 4px 8px;
+  /* (위아래) (왼쪽오른쪽) */
+}
+
+/* id를 만들 수 있으면 id를 만들면 되는데, 딱히 js 상 안쓰이는 거라면 관계로 표시 */
+#searchContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  padding: 8px;
+  border: 1px solid gray;
+  border-radius: 16px;
+  width: 480px;
+  /* height: 480px; */
+  aspect-ratio: 1;
+  /* 가로 / 세로 */
+  /* 가로 중앙정렬 */
+  margin: 16px auto;
+}
